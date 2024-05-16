@@ -70,6 +70,7 @@ list_var.append(f"[{datetime.now()}][Debug Center] Successful get StudentMain.ex
 # 设置置顶函数
 def openTopLevel():
     root.wm_attributes('-topmost',1)
+    root.after(100, openTopLevel)
 openTopLevel()
 
 # 设置杀死学生端函数
@@ -79,6 +80,10 @@ def killSM():
         process = psutil.Process(spid)
         process.kill()
         list_var.append(f"进程 {spid} 已成功杀死")
+        # 获取python的PID
+        ppid = getPID('python.exe')
+        # 打印python的PID
+        list_var.append(f"[{datetime.now()}][Debug Center] Successful get python.exe pid {ppid}")
     except psutil.NoSuchProcess:
         list_var.append(f"找不到进程 {spid}")
     except psutil.AccessDenied:
@@ -88,6 +93,10 @@ def killSM():
 def killWG():
     global list_var
     try:
+        # 获取网管程序的PID
+        mpid = getPID('MasterHelper.exe')
+        # 打印网管程序的PID
+        list_var.append(f"[{datetime.now()}][Debug Center] Successful get MasterHelper.exe pid {mpid}")
         process = psutil.Process(mpid)
         process.kill()
         list_var.append(f"进程 {mpid} 已成功杀死")
@@ -112,6 +121,9 @@ def toggleWindow():
 
 def closeWindow():
     exit()
+
+def fuckUDisk():
+    os.system("sc stop TDFileFilter")
 
 def setboard():
     global keyboardstr
@@ -206,8 +218,8 @@ patchPassword = ttk.Button(text='破解极域密码',width=12,command=patch)
 patchPassword.place(x=10,y=120)
 restartMythware = ttk.Button(text='重启极域',width=12,command=restartMythware)
 restartMythware.place(x=130,y=120)
-hookKeyboard = ttk.Button(text='解除键盘锁',width=12,command=lol_lmao)
-hookKeyboard.place(x=10,y=150)
+fuckDisk = ttk.Button(text='去除U盘锁',width=12,command=fuckUDisk)
+fuckDisk.place(x=10,y=150)
 menu = tk.Menu(root, tearoff=0)
 menu.add_cascade(label="控制台",command=console)
 root.config(menu=menu)
